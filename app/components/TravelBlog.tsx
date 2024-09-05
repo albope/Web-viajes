@@ -1,32 +1,37 @@
 "use client"; // Esto convierte el componente en un Client Component
 import { useState } from 'react'
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
+import { MapContainer, TileLayer, Marker, Popup, ZoomControl, useMap, useMapEvent } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import { Icon } from 'leaflet'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './card';
-import { Button } from '../components/button'; // Ajustar la ruta dependiendo de la ubicación del archivo
+import { Button } from './button'; // Ajustar la ruta dependiendo de la ubicación del archivo
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from './carousel';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './accordion';
 import { Facebook, Instagram, Twitter } from "lucide-react"
+import { CornerDownLeft } from 'lucide-react'
 
 // Datos actualizados de los viajes
 const trips = [
-  { id: 1, destination: 'Portugal', date: 'agosto 2022', description: 'Explorando las hermosas costas y la rica historia de Portugal.', image: '/images/portugal.jpg', location: [39.3999, -8.2245], driveLink: 'https://drive.google.com/drive/folders/your-portugal-folder-id' },
-  { id: 2, destination: 'Bélgica', date: 'diciembre 2022', description: 'Disfrutando de la arquitectura medieval y la deliciosa cerveza belga.', image: '/images/belgica.jpg', location: [50.5039, 4.4699], driveLink: 'https://drive.google.com/drive/folders/your-belgium-folder-id' },
-  { id: 3, destination: 'Tailandia', date: 'octubre 2023', description: 'Aventuras en el sudeste asiático, entre templos y playas paradisíacas.', image: '/images/tailandia.jpg', location: [15.8700, 100.9925], driveLink: 'https://drive.google.com/drive/folders/your-thailand-folder-id' },
-  { id: 4, destination: 'Italia', date: 'febrero 2024', description: 'Un viaje culinario y cultural por las ciudades italianas.', image: '/images/italia.jpg', location: [41.8719, 12.5674], driveLink: 'https://drive.google.com/drive/folders/your-italy-folder-id' },
-  { id: 5, destination: 'Japón', date: 'octubre 2024', description: 'Descubriendo la fascinante mezcla de tradición y modernidad en Japón.', image: '/images/japon.jpg', location: [36.2048, 138.2529], driveLink: 'https://drive.google.com/drive/folders/your-japan-folder-id' },
+  { id: 1, destination: 'Barcelona', date: 'abril 2022', description: 'Un fin de semana largo en la vibrante capital catalana.', image: '/images/barcelona.jpg', location: [41.3851, 2.1734], driveLink: 'https://drive.google.com/drive/folders/your-barcelona-folder-id' },
+  { id: 2, destination: 'Portugal', date: 'agosto 2022', description: 'Explorando las hermosas costas y la rica historia de Portugal.', image: '/images/portugal.jpg', location: [39.3999, -8.2245], driveLink: 'https://drive.google.com/drive/folders/your-portugal-folder-id' },
+  { id: 3, destination: 'Bélgica', date: 'diciembre 2022', description: 'Disfrutando de la arquitectura medieval y la deliciosa cerveza belga.', image: '/images/belgica.jpg', location: [50.5039, 4.4699], driveLink: 'https://drive.google.com/drive/folders/your-belgium-folder-id' },
+  { id: 4, destination: 'Tailandia', date: 'octubre 2023', description: 'Aventuras en el sudeste asiático, entre templos y playas paradisíacas.', image: '/images/tailandia.jpg', location: [15.8700, 100.9925], driveLink: 'https://drive.google.com/drive/folders/your-thailand-folder-id' },
+  { id: 5, destination: 'Italia', date: 'febrero 2024', description: 'Un viaje culinario y cultural por las ciudades italianas.', image: '/images/italia.jpg', location: [41.8719, 12.5674], driveLink: 'https://drive.google.com/drive/folders/your-italy-folder-id' },
   { id: 6, destination: 'Menorca', date: 'junio 2024', description: 'Relajándonos en las calas cristalinas de Menorca.', image: '/images/menorca.jpg', location: [39.9499, 4.1147], driveLink: 'https://drive.google.com/drive/folders/your-menorca-folder-id' },
-  { id: 7, destination: 'Mallorca', date: 'septiembre 2024', description: 'Explorando la mayor de las Islas Baleares y sus encantos.', image: '/images/mallorca.jpg', location: [39.6953, 3.0176], driveLink: 'https://drive.google.com/drive/folders/your-mallorca-folder-id' },
-  { id: 8, destination: 'Barcelona', date: 'abril 2022', description: 'Un fin de semana largo en la vibrante capital catalana.', image: '/images/barcelona.jpg', location: [41.3851, 2.1734], driveLink: 'https://drive.google.com/drive/folders/your-barcelona-folder-id' },
+  { id: 7, destination: 'Japón', date: 'octubre 2024', description: 'Descubriendo la fascinante mezcla de tradición y modernidad en Japón.', image: '/images/japon.jpg', location: [36.2048, 138.2529], driveLink: 'https://drive.google.com/drive/folders/your-japan-folder-id' },
+  { id: 8, destination: 'Mallorca', date: 'septiembre 2024', description: 'Explorando la mayor de las Islas Baleares y sus encantos.', image: '/images/mallorca.jpg', location: [39.6953, 3.0176], driveLink: 'https://drive.google.com/drive/folders/your-mallorca-folder-id' },
+
 ]
 
 const highlights = [
-  { id: 1, title: 'Atardecer en Sintra', description: 'Viendo el sol ponerse sobre los coloridos palacios de Sintra, Portugal.' },
-  { id: 2, title: 'Degustación de cervezas en Brujas', description: 'Probando las mejores cervezas artesanales en un pub medieval de Brujas, Bélgica.' },
-  { id: 3, title: 'Snorkel en Koh Phi Phi', description: 'Nadando entre peces tropicales en las cristalinas aguas de Koh Phi Phi, Tailandia.' },
-  { id: 4, title: 'Paseo en góndola en Venecia', description: 'Recorriendo los románticos canales de Venecia al atardecer, Italia.' },
-  { id: 5, title: 'Ceremonia del té en Kioto', description: 'Participando en una tradicional ceremonia del té en un templo de Kioto, Japón.' },
+  { id: 1, title: 'Cabo de Gata + Portugal', description: 'Viendo el sol ponerse sobre los coloridos palacios de Sintra, Portugal.' },
+  { id: 2, title: 'Los Flandes', description: 'Probando las mejores cervezas artesanales en un pub medieval de Brujas, Bélgica.' },
+  { id: 3, title: 'Barcelona', description: 'Nadando entre peces tropicales en las cristalinas aguas de Koh Phi Phi, Tailandia.' },
+  { id: 4, title: 'Tailandia', description: 'Recorriendo los románticos canales de Venecia al atardecer, Italia.' },
+  { id: 5, title: 'Italia', description: 'Participando en una tradicional ceremonia del té en un templo de Kioto, Japón.' },
+  { id: 6, title: 'Menorca', description: 'Nadando entre peces tropicales en las cristalinas aguas de Koh Phi Phi, Tailandia.' },
+  { id: 7, title: 'Mallorca', description: 'Explorando la mayor de las Islas Baleares y sus encantos.' },
+  { id: 8, title: 'Japón', description: 'Caminando por las calles de Tokio, Japón.' },
 ]
 
 const customIcon = new Icon({
@@ -34,6 +39,32 @@ const customIcon = new Icon({
   iconSize: [25, 41],
   iconAnchor: [12, 41]
 })
+
+function ZoomResetControl() {
+  const map = useMap()
+  const [showReset, setShowReset] = useState(false)
+  const initialZoom = 4
+
+  useMapEvent('zoom', () => {
+    setShowReset(map.getZoom() !== initialZoom)
+  })
+
+  const handleReset = () => {
+    map.setView([41.3851, 2.1734], initialZoom)
+  }
+
+  if (!showReset) return null
+
+  return (
+    <div className="leaflet-bottom leaflet-left" style={{ marginBottom: '40px' }}>
+      <div className="leaflet-control leaflet-bar">
+        <Button onClick={handleReset} variant="outline" size="icon" className="bg-white">
+          <CornerDownLeft className="h-4 w-4" />
+        </Button>
+      </div>
+    </div>
+  )
+}
 
 export default function TravelBlogEnhanced() {
   const [selectedTrip, setSelectedTrip] = useState(trips[0])
@@ -52,20 +83,22 @@ export default function TravelBlogEnhanced() {
         </div>
       </header>
 
-      {/* Mapa interactivo (ahora antes de la galería) */}
+      {/* Mapa interactivo */}
       <section className="py-12 bg-muted">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-semibold mb-6">Mapa de Nuestros Viajes</h2>
           <Card>
             <CardContent className="p-0">
               <div className="h-96 rounded-lg overflow-hidden">
-                <MapContainer center={[41.3851, 2.1734]} zoom={4} style={{ height: '100%', width: '100%' }}>
+                <MapContainer center={[41.3851, 2.1734]} zoom={4} style={{ height: '100%', width: '100%' }} zoomControl={false}>
                   <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                   {trips.map((trip) => (
                     <Marker key={trip.id} position={trip.location as [number, number]} icon={customIcon}>
                       <Popup>{trip.destination}</Popup>
                     </Marker>
                   ))}
+                  <ZoomControl position="bottomright" />
+                  <ZoomResetControl />
                 </MapContainer>
               </div>
             </CardContent>
