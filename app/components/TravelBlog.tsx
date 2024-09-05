@@ -12,15 +12,118 @@ import { CornerDownLeft } from 'lucide-react'
 
 // Datos actualizados de los viajes
 const trips = [
-  { id: 1, destination: 'Barcelona', date: 'abril 2022', description: 'Un fin de semana largo en la vibrante capital catalana.', image: '/images/barcelona.jpg', location: [41.3851, 2.1734], driveLink: 'https://drive.google.com/drive/folders/your-barcelona-folder-id' },
-  { id: 2, destination: 'Portugal', date: 'agosto 2022', description: 'Explorando las hermosas costas y la rica historia de Portugal.', image: '/images/portugal.jpg', location: [39.3999, -8.2245], driveLink: 'https://drive.google.com/drive/folders/your-portugal-folder-id' },
-  { id: 3, destination: 'Bélgica', date: 'diciembre 2022', description: 'Disfrutando de la arquitectura medieval y la deliciosa cerveza belga.', image: '/images/belgica.jpg', location: [50.5039, 4.4699], driveLink: 'https://drive.google.com/drive/folders/your-belgium-folder-id' },
-  { id: 4, destination: 'Tailandia', date: 'octubre 2023', description: 'Aventuras en el sudeste asiático, entre templos y playas paradisíacas.', image: '/images/tailandia.jpg', location: [15.8700, 100.9925], driveLink: 'https://drive.google.com/drive/folders/your-thailand-folder-id' },
-  { id: 5, destination: 'Italia', date: 'febrero 2024', description: 'Un viaje culinario y cultural por las ciudades italianas.', image: '/images/italia.jpg', location: [41.8719, 12.5674], driveLink: 'https://drive.google.com/drive/folders/your-italy-folder-id' },
-  { id: 6, destination: 'Menorca', date: 'junio 2024', description: 'Relajándonos en las calas cristalinas de Menorca.', image: '/images/menorca.jpg', location: [39.9499, 4.1147], driveLink: 'https://drive.google.com/drive/folders/your-menorca-folder-id' },
-  { id: 7, destination: 'Japón', date: 'octubre 2024', description: 'Descubriendo la fascinante mezcla de tradición y modernidad en Japón.', image: '/images/japon.jpg', location: [36.2048, 138.2529], driveLink: 'https://drive.google.com/drive/folders/your-japan-folder-id' },
-  { id: 8, destination: 'Mallorca', date: 'septiembre 2024', description: 'Explorando la mayor de las Islas Baleares y sus encantos.', image: '/images/mallorca.jpg', location: [39.6953, 3.0176], driveLink: 'https://drive.google.com/drive/folders/your-mallorca-folder-id' },
-
+  {
+    id: 1,
+    destination: 'Barcelona',
+    date: 'abril 2022',
+    description: 'Un fin de semana largo en la vibrante capital catalana.',
+    image: '/images/barcelona.jpg',
+    location: [41.3851, 2.1734],
+    driveLink: 'https://drive.google.com/drive/folders/your-barcelona-folder-id',
+    placesVisited: ['Sagrada Familia', 'Parque Güell', 'Las Ramblas'],
+    activities: ['Tour arquitectónico de Gaudí', 'Paseo por el Barrio Gótico', 'Visita al Camp Nou'],
+    cuisine: 'Disfrutamos de tapas variadas y una auténtica paella en la Barceloneta.',
+    accommodation: 'Nos alojamos en un apartamento acogedor en el barrio del Eixample.',
+    tips: 'Compra las entradas para la Sagrada Familia con antelación para evitar largas colas.'
+  },
+  {
+    id: 2,
+    destination: 'Portugal',
+    date: 'agosto 2022',
+    description: 'Explorando las hermosas costas y la rica historia de Portugal.',
+    image: '/images/portugal.jpg',
+    location: [39.3999, -8.2245],
+    driveLink: 'https://drive.google.com/drive/folders/your-portugal-folder-id',
+    placesVisited: ['Lisboa', 'Oporto', 'Algarve'],
+    activities: ['Recorrido en tranvía por Lisboa', 'Cata de vinos en Oporto', 'Playa en el Algarve'],
+    cuisine: 'Probamos el bacalao a bras y los deliciosos pasteles de nata.',
+    accommodation: 'Alternamos entre hoteles boutique y casas rurales tradicionales.',
+    tips: 'No te pierdas el fado en vivo en los bares de Lisboa por la noche.'
+  },
+  {
+    id: 3,
+    destination: 'Bélgica',
+    date: 'diciembre 2022',
+    description: 'Disfrutando de la arquitectura medieval y la deliciosa cerveza belga.',
+    image: '/images/belgica.jpg',
+    location: [50.5039, 4.4699],
+    driveLink: 'https://drive.google.com/drive/folders/your-belgium-folder-id',
+    placesVisited: ['Bruselas', 'Brujas', 'Gante'],
+    activities: ['Visita al Atomium', 'Paseo en bote por los canales de Brujas', 'Tour de cervezas'],
+    cuisine: 'Degustamos waffles, chocolates y una variedad de cervezas artesanales.',
+    accommodation: 'Nos hospedamos en un hotel histórico en el centro de Bruselas.',
+    tips: 'Compra un pase de tren para moverte fácilmente entre las ciudades belgas.'
+  },
+  {
+    id: 4,
+    destination: 'Tailandia',
+    date: 'octubre 2023',
+    description: 'Aventuras en el sudeste asiático, entre templos y playas paradisíacas.',
+    image: '/images/tailandia.jpg',
+    location: [15.8700, 100.9925],
+    driveLink: 'https://drive.google.com/drive/folders/your-thailand-folder-id',
+    placesVisited: ['Bangkok', 'Chiang Mai', 'Islas Phi Phi'],
+    activities: ['Visita al Gran Palacio', 'Santuario de elefantes en Chiang Mai', 'Snorkel en Phi Phi'],
+    cuisine: 'Nos deleitamos con pad thai callejero y curry verde auténtico.',
+    accommodation: 'Alternamos entre hoteles de lujo y bungalows en la playa.',
+    tips: 'Lleva ropa adecuada para visitar los templos y respeta las costumbres locales.'
+  },
+  {
+    id: 5,
+    destination: 'Italia',
+    date: 'febrero 2024',
+    description: 'Un viaje culinario y cultural por las ciudades italianas.',
+    image: '/images/italia.jpg',
+    location: [41.8719, 12.5674],
+    driveLink: 'https://drive.google.com/drive/folders/your-italy-folder-id',
+    placesVisited: ['Roma', 'Florencia', 'Venecia'],
+    activities: ['Tour por el Coliseo', 'Visita a la Galería Uffizi', 'Paseo en góndola'],
+    cuisine: 'Probamos auténtica pasta casera, pizza napolitana y gelato artesanal.',
+    accommodation: 'Nos alojamos en pequeños hoteles familiares en el centro de cada ciudad.',
+    tips: 'Compra el pase Roma Pass para ahorrar en entradas y transporte público.'
+  },
+  {
+    id: 6,
+    destination: 'Menorca',
+    date: 'junio 2024',
+    description: 'Relajándonos en las calas cristalinas de Menorca.',
+    image: '/images/menorca.jpg',
+    location: [39.9499, 4.1147],
+    driveLink: 'https://drive.google.com/drive/folders/your-menorca-folder-id',
+    placesVisited: ['Ciutadella', 'Cala Macarella', 'Monte Toro'],
+    activities: ['Kayak en calas vírgenes', 'Visita a sitios prehistóricos', 'Puesta de sol en Cova d\'en Xoroi'],
+    cuisine: 'Disfrutamos de caldereta de langosta y queso de Mahón.',
+    accommodation: 'Alquilamos una villa con piscina cerca de Ciutadella.',
+    tips: 'Alquila un coche para explorar las calas más remotas y hermosas de la isla.'
+  },
+  {
+    id: 7,
+    destination: 'Mallorca',
+    date: 'septiembre 2024',
+    description: 'Explorando la mayor de las Islas Baleares y sus encantos.',
+    image: '/images/mallorca.jpg',
+    location: [39.6953, 3.0176],
+    driveLink: 'https://drive.google.com/drive/folders/your-mallorca-folder-id',
+    placesVisited: ['Palma de Mallorca', 'Cala d\'Or', 'Serra de Tramuntana'],
+    activities: ['Visita a la Catedral de Palma', 'Paseo en barco por las calas', 'Senderismo en la Serra'],
+    cuisine: 'Degustamos la auténtica ensaimada mallorquina y probamos el delicioso tumbet.',
+    accommodation: 'Nos alojamos en un encantador agroturismo en el centro de la isla.',
+    tips: 'Recomendamos alquilar un coche para explorar la isla con libertad y visitar las calas menos concurridas.'
+  },
+  {
+    id: 8,
+    destination: 'Japón',
+    date: 'octubre 2024',
+    description: 'Descubriendo la fascinante mezcla de tradición y modernidad en Japón.',
+    image: '/images/japon.jpg',
+    location: [36.2048, 138.2529],
+    driveLink: 'https://drive.google.com/drive/folders/your-japan-folder-id',
+    placesVisited: ['Tokio', 'Kioto', 'Monte Fuji'],
+    activities: ['Visita al Templo Senso-ji', 'Ceremonia del té en Kioto', 'Baño en onsen con vista al Monte Fuji'],
+    cuisine: 'Probamos sushi fresco en el mercado de Tsukiji y ramen auténtico en Tokio.',
+    accommodation: 'Experimentamos tanto hoteles cápsula modernos como ryokans tradicionales.',
+    tips: 'Compra el Japan Rail Pass antes de llegar para ahorrar en transporte entre ciudades.'
+  }
 ]
 
 const highlights = [
@@ -152,7 +255,25 @@ export default function TravelBlogEnhanced() {
               <CardDescription>{selectedTrip.date}</CardDescription>
             </CardHeader>
             <CardContent>
-              <p>{selectedTrip.description}</p>
+              <p className="mb-4">{selectedTrip.description}</p>
+              <h3 className="font-semibold mt-4">Lugares visitados:</h3>
+              <ul className="list-disc list-inside mb-2">
+                {selectedTrip.placesVisited.map((place, index) => (
+                  <li key={index}>{place}</li>
+                ))}
+              </ul>
+              <h3 className="font-semibold mt-4">Actividades:</h3>
+              <ul className="list-disc list-inside mb-2">
+                {selectedTrip.activities.map((activity, index) => (
+                  <li key={index}>{activity}</li>
+                ))}
+              </ul>
+              <h3 className="font-semibold mt-4">Gastronomía:</h3>
+              <p>{selectedTrip.cuisine}</p>
+              <h3 className="font-semibold mt-4">Alojamiento:</h3>
+              <p>{selectedTrip.accommodation}</p>
+              <h3 className="font-semibold mt-4">Consejos:</h3>
+              <p>{selectedTrip.tips}</p>
             </CardContent>
           </Card>
         </div>
@@ -189,7 +310,7 @@ export default function TravelBlogEnhanced() {
               <Twitter className="h-4 w-4" />
             </Button>
           </div>
-          <p className="text-center mt-4 text-sm text-muted-foreground">&copy; 2023 Nuestras Aventuras. Todos los derechos reservados.</p>
+          <p className="text-center mt-4 text-sm text-muted-foreground">&copy; 2024 Alberto & Carmen. Todos los derechos reservados.</p>
         </div>
       </footer>
     </div>
