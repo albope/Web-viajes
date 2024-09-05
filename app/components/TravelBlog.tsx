@@ -118,9 +118,14 @@ export default function TravelBlogEnhanced() {
               {trips.map((trip) => (
                 <CarouselItem key={trip.id}>
                   <Card>
-                    <CardContent className="p-0">
+                    <CardContent className="p-0 relative">
                       <a href={trip.driveLink} target="_blank" rel="noopener noreferrer">
                         <img src={trip.image} alt={trip.destination} className="w-full h-64 object-cover rounded-t-lg" />
+                        <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
+                          <Button variant="secondary">
+                            Ver álbum en Google Drive
+                          </Button>
+                        </div>
                       </a>
                     </CardContent>
                     <CardHeader>
