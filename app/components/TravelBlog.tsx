@@ -169,11 +169,48 @@ function ZoomResetControl() {
   )
 }
 
+// Añade esta nueva interfaz para los destinos de la lista de deseos
+interface WishlistDestination {
+  id: number;
+  name: string;
+  planned: boolean;
+  date: string;
+}
+
 export default function TravelBlogEnhanced() {
   const [selectedTrip, setSelectedTrip] = useState(trips[0])
+  const [wishlist, setWishlist] = useState<WishlistDestination[]>([]);
+
+  const [newDestination, setNewDestination] = useState('');
 
   const handleSlideChange = (index: number) => {
     setSelectedTrip(trips[index])
+  }
+
+  const handleWishlistChange = (id: number, field: 'planned' | 'date', value: boolean | string) => {
+    setWishlist(wishlist.map(item => 
+      item.id === id ? { ...item, [field]: value } : item
+    ));
+  }
+
+  const handleAddDestination = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (newDestination.trim() !== '') {
+      setWishlist([
+        ...wishlist,
+        {
+          id: wishlist.length + 1,
+          name: newDestination.trim(),
+          planned: false,
+          date: ''
+        }
+      ]);
+      setNewDestination('');
+    }
+  }
+
+  const handleRemoveDestination = (id: number) => {
+    setWishlist(wishlist.filter(item => item.id !== id));
   }
 
   return (
@@ -293,6 +330,66 @@ export default function TravelBlogEnhanced() {
               </AccordionItem>
             ))}
           </Accordion>
+        </div>
+      </section>
+
+      {/* Nueva sección: Lista de Deseos */}
+      <section className="py-12">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-semibold mb-6">Nuestra Lista de Deseos</h2>
+          <div className="bg-white shadow-md rounded-lg p-6">
+            <h3 className="text-xl font-semibold mb-4">Próximos Destinos</h3>
+            <p className="mb-4">Selecciona los lugares que quieres visitar y cuándo planeas hacerlo</p>
+            
+            {/* Formulario para añadir nuevo destino */}
+            <form onSubmit={handleAddDestination} className="mb-6">
+              <div className="flex items-center space-x-2">
+                <input
+                  type="text"
+                  value={newDestination}
+                  onChange={(e) => setNewDestination(e.target.value)}
+                  placeholder="Nuevo destino"
+                  className="form-input flex-grow px-2 py-1 border rounded"
+                />
+                <button type="submit" className="px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">
+                  Añadir
+                </button>
+              </div>
+            </form>
+
+            {/* Lista de destinos */}
+            {wishlist.map((destination) => (
+              <div key={destination.id} className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 mb-4">
+                <div className="flex items-center space-x-2 flex-grow">
+                  <input
+                    type="checkbox"
+                    id={`destination-${destination.id}`}
+                    checked={destination.planned}
+                    onChange={(e) => handleWishlistChange(destination.id, 'planned', e.target.checked)}
+                    className="form-checkbox h-5 w-5 text-blue-600"
+                  />
+                  <label htmlFor={`destination-${destination.id}`} className="flex-grow">
+                    {destination.name}
+                  </label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="month"
+                    value={destination.date}
+                    onChange={(e) => handleWishlistChange(destination.id, 'date', e.target.value)}
+                    className="form-input w-full sm:w-44 px-2 py-1 border rounded"
+                    disabled={!destination.planned}
+                  />
+                  <button
+                    onClick={() => handleRemoveDestination(destination.id)}
+                    className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                  >
+                    Eliminar
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
