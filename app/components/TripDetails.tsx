@@ -1,12 +1,8 @@
 // components/TripDetails.tsx
 import React from 'react';
-import {
-  VerticalTimeline,
-  VerticalTimelineElement,
-} from 'react-vertical-timeline-component';
-import 'react-vertical-timeline-component/style.min.css';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from './card';
 
+// Tipos de datos
 type TimelineEvent = {
   date: string;
   title: string;
@@ -22,7 +18,7 @@ type Trip = {
   cuisine: string;
   accommodation: string;
   tips: string;
-  timelineEvents: TimelineEvent[];
+  timelineEvents: TimelineEvent[]; // Solo contendrá un evento
 };
 
 type TripDetailsProps = {
@@ -45,6 +41,9 @@ const TripDetails: React.FC<TripDetailsProps> = ({ trip }) => {
     );
   }
 
+  // Extrae el momento más memorable (único evento del viaje)
+  const memorableMoment = trip.timelineEvents[0];
+
   return (
     <section className="py-12">
       <div className="container mx-auto px-4">
@@ -55,40 +54,28 @@ const TripDetails: React.FC<TripDetailsProps> = ({ trip }) => {
             <CardDescription>{trip.date}</CardDescription>
           </CardHeader>
           <CardContent>
-            <VerticalTimeline>
-              {trip.timelineEvents.map((event, index) => (
-                <VerticalTimelineElement
-                  key={index}
-                  date={event.date}
-                  iconStyle={{
-                    background: 'rgb(33, 150, 243)',
-                    color: '#fff',
-                  }}
-                  contentStyle={{
-                    background: '#f0f4f8',
-                    color: '#333',
-                  }}
-                  contentArrowStyle={{
-                    borderRight: '7px solid  #f0f4f8',
-                  }}
-                >
-                  <h3 className="vertical-timeline-element-title">
-                    {event.title}
-                  </h3>
-                  <p>{event.description}</p>
-                  {event.image && (
-                    <img
-                      src={event.image}
-                      alt={event.title}
-                      className="w-full h-64 object-cover rounded-lg mt-4"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = '/images/generic-travel.jpg';
-                      }}
-                    />
-                  )}
-                </VerticalTimelineElement>
-              ))}
-            </VerticalTimeline>
+            {/* Mostrar el momento más memorable si existe */}
+            {memorableMoment ? (
+              <div className="mb-6">
+                <h3 className="text-2xl font-bold mt-4 mb-2">El momento más memorable</h3>
+                <h4 className="font-semibold">{memorableMoment.title}</h4>
+                <p className="text-gray-600">{memorableMoment.date}</p>
+                <p>{memorableMoment.description}</p>
+                {memorableMoment.image && (
+                  <img
+                    src={memorableMoment.image}
+                    alt={memorableMoment.title}
+                    className="w-full h-64 object-cover rounded-lg mt-4"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = '/images/generic-travel.jpg';
+                    }}
+                  />
+                )}
+              </div>
+            ) : (
+              <p className="text-gray-500">No hay eventos disponibles.</p>
+            )}
+
             {/* Detalles Adicionales del Viaje */}
             <h3 className="font-semibold mt-4">Lugares visitados:</h3>
             <ul className="list-disc list-inside mb-2">
